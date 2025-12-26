@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { PlusIcon, FunnelIcon, RectangleStackIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, FunnelIcon, RectangleStackIcon, ClipboardDocumentListIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 import { useTask } from '../hooks/useTask';
 import { useTaskFilters } from '../hooks/useTaskFilters';
 import { useConfetti } from '../hooks/useConfetti';
 import { useBulkActions } from '../hooks/useBulkActions';
 import { useToast } from '../hooks/useToast';
+import { useAuth } from '../hooks/useAuth';
 import TaskStats from '../components/dashboard/TaskStats';
 import FilterSidebar from '../components/dashboard/FilterSidebar';
 import TaskList from '../components/dashboard/TaskList';
@@ -14,7 +15,6 @@ import ConfirmDialog from '../components/common/ConfirmDialog';
 import BulkActionsBar from '../components/dashboard/BulkActionsBar';
 import TaskTemplatesModal from '../components/dashboard/TaskTemplatesModal';
 import ExportModal from '../components/dashboard/ExportModal';
-import LeftSidebar from '../components/dashboard/LeftSidebar';
 import RightSidebar from '../components/dashboard/RightSidebar';
 import DailyTodoPlanner from '../components/dashboard/DailyTodoPlanner';
 import { exportAsJSON, exportAsCSV, exportAsMarkdown, getExportStats } from '../utils/exportUtils';
@@ -30,6 +30,8 @@ const DashboardPage = () => {
     reorderTasks 
   } = useTask();
 
+  const { logout } = useAuth();
+
   const { 
     filters, 
     filteredTasks, 
@@ -37,7 +39,7 @@ const DashboardPage = () => {
     clearFilters 
   } = useTaskFilters(tasks);
 
-  const { triggerConfetti } = useConfetti();
+  const { celebrate } = useConfetti();
   const { showToast } = useToast();
 
   // Bulk actions
@@ -85,7 +87,7 @@ const DashboardPage = () => {
       
       // Trigger confetti if task was just completed
       if (!wasCompleted && isNowCompleted) {
-        triggerConfetti();
+        celebrate();
       }
       
       setIsEditModalOpen(false);
@@ -131,7 +133,7 @@ const DashboardPage = () => {
       
       // Trigger confetti if task was just completed
       if (!wasCompleted) {
-        triggerConfetti();
+        celebrate();
       }
     } catch (err) {
       console.error('Failed to update task:', err);
@@ -230,11 +232,18 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-black">
-      {/* Left Sidebar - Hidden on mobile */}
-      <div className="hidden lg:block">
-        <LeftSidebar />
-      </div>
+    <div className="flex min-h-screen bg-black relative">
+      {/* Logout Button - Fixed bottom-left */}
+      <button
+        onClick={logout}
+        className="fixed bottom-6 left-6 z-50 flex items-center space-x-2 px-4 py-2.5 rounded-lg
+                   bg-black/60 backdrop-blur-md border border-white/10
+                   text-gray-400 hover:bg-red-950/40 hover:text-red-400 hover:border-red-500/30
+                   transition-all duration-200 group shadow-lg"
+      >
+        <ArrowRightOnRectangleIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+        <span className="font-medium hidden sm:inline">Logout</span>
+      </button>
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto pb-20 xl:pb-0">
@@ -243,11 +252,14 @@ const DashboardPage = () => {
           <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r 
-                             from-indigo-400 via-purple-400 to-pink-400 mb-2">
-                  Task Dashboard
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl title-elegant text-transparent bg-clip-text bg-gradient-to-r 
+                             from-indigo-300 via-purple-300 to-pink-300 mb-2 tracking-tight">
+                  Hello You!! 
                 </h1>
-                <p className="text-sm sm:text-base text-slate-400">
+                <p className="text-sm sm:text-base text-slate-100 font-light italic">
+                  It's me your Dashboard 
+                </p>
+                <p className="text-sm sm:text-base text-slate-200 font-light italic">
                   Manage your tasks efficiently and stay organized ✨
                 </p>
               </div>
@@ -276,7 +288,7 @@ const DashboardPage = () => {
             {/* Daily Todo Planner - Hidden on mobile, visible on desktop */}
             <div className="hidden lg:block lg:col-span-4">
               <div className="sticky top-4" style={{ height: 'calc(100vh - 400px)', minHeight: '500px' }}>
-                <DailyTodoPlanner />
+                <DailyTodoPlanner onComplete={celebrate} />
               </div>
             </div>
 
@@ -373,7 +385,7 @@ const DashboardPage = () => {
             title="Daily Todo List"
           >
             <div style={{ height: '70vh', minHeight: '500px' }}>
-              <DailyTodoPlanner />
+              <DailyTodoPlanner onComplete={celebrate} />
             </div>
           </Modal>
 

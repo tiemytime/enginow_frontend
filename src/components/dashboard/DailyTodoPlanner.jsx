@@ -5,7 +5,7 @@ import { CheckIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
  * DailyTodoPlanner Component
  * A simple daily todo list with pink/coral accents inspired by weekly planner design
  */
-const DailyTodoPlanner = () => {
+const DailyTodoPlanner = ({ onComplete }) => {
   // Initialize todos from localStorage or with default empty items
   const [todos, setTodos] = useState(() => {
     const savedTodos = localStorage.getItem('dailyTodos');
@@ -30,9 +30,17 @@ const DailyTodoPlanner = () => {
   }, [todos]);
 
   const handleToggleTodo = (id) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+    setTodos(todos.map(todo => {
+      if (todo.id === id) {
+        const wasCompleted = todo.completed;
+        // Trigger confetti if todo is being completed (not uncompleted)
+        if (!wasCompleted && onComplete) {
+          onComplete();
+        }
+        return { ...todo, completed: !wasCompleted };
+      }
+      return todo;
+    }));
   };
 
   const handleUpdateTodo = (id, text) => {
@@ -79,21 +87,19 @@ const DailyTodoPlanner = () => {
           {/* Title Section */}
           <div className="px-6 py-4 bg-gradient-to-b from-zinc-900/50 to-transparent">
             <div className="text-center">
-              <h2 className="text-xl font-bold mb-2" 
+              <h2 className="text-2xl font-playfair font-bold mb-2 text-slate-100 tracking-wide"
                   style={{ 
-                    fontFamily: '"Playfair Display", Georgia, serif',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '2px',
+                    textShadow: '0 0 20px rgba(251, 207, 232, 0.3)'
                   }}>
-                <span className="text-slate-100 tracking-wide">DAY PLANNER</span>{' '}
-        
+                DAY PLANNER
               </h2>
-              <div className="inline-block px-4 py-1 rounded-full"
+              <div className="inline-block px-5 py-1.5 rounded-full"
                    style={{ backgroundColor: 'rgba(251, 207, 232, 0.95)' }}>
-                <p className="text-xs font-medium capitalize" 
+                <p className="text-sm font-dancing font-semibold capitalize" 
                    style={{ 
-                     fontFamily: '"Playfair Display", Georgia, serif',
                      color: '#000000',
-                     letterSpacing: '0.5px'
+                     letterSpacing: '1px'
                    }}>
                   {getCurrentDay()}
                 </p>

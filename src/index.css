@@ -99,6 +99,49 @@ body {
 /* ============================================
    UTILITY CLASSES
    ============================================ */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Elegant Font Families */
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-dancing {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-great-vibes {
+  font-family: 'Great Vibes', cursive;
+}
+
+.font-satisfy {
+  font-family: 'Satisfy', cursive;
+}
+
+/* Title Styling with Elegance */
+.title-elegant {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15);
+}
+
+.title-cursive {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 30px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.2);
+}
+
+.title-signature {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 30px rgba(139, 92, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.2);
+}
+
 .text-gradient-warm {
   background: linear-gradient(135deg, #f59e0b 0%, #ef4444 50%, #ec4899 100%);
   -webkit-background-clip: text;
@@ -174,4 +217,61 @@ body {
 
 .animate-shimmer {
   animation: shimmer 2s infinite;
+}
+
+/* Aurora Background Animations */
+@keyframes aurora-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.7;
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.6;
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+    opacity: 0.8;
+  }
+}
+
+@keyframes aurora-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translate(-40px, 30px) scale(1.2) rotate(5deg);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translate(30px, -20px) scale(0.95) rotate(-5deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes aurora-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(20px, 30px) scale(1.15);
+    opacity: 0.5;
+  }
+}
+
+.animate-aurora-1 {
+  animation: aurora-1 20s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: aurora-2 25s ease-in-out infinite;
+}
+
+.animate-aurora-3 {
+  animation: aurora-3 30s ease-in-out infinite;
 }
