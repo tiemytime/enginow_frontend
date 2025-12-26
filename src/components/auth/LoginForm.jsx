@@ -103,41 +103,34 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md">
       {/* Form Header */}
-      <div className="text-center mb-8 animate-slide-up">
-        <h1 className="text-4xl md:text-5xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 mb-3"
-            style={{ 
-              textShadow: '0 0 30px rgba(139, 92, 246, 0.4)',
-              letterSpacing: '-0.02em'
-            }}>
-          Welcome Back
-        </h1>
-        <p className="text-slate-300 text-lg font-light italic">
-          Sign in to manage your tasks
+      <div className="mb-8 text-center">
+        <h2 className="text-3xl font-bold text-white mb-2">
+          Welcome back
+        </h2>
+        <p className="text-slate-400">
+          Sign in to your account to continue
         </p>
       </div>
 
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-zinc-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl animate-scale-in hover:border-purple-500/20 transition-all duration-300"
-        style={{
-          boxShadow: '0 0 60px rgba(139, 92, 246, 0.25), 0 25px 70px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)'
-        }}
+        className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-8 shadow-2xl"
         noValidate
       >
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Email Field */}
           <Input
-            label="Email Address"
+            label="Email"
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.email ? errors.email : ''}
-            placeholder="name@example.com"
+            placeholder="you@example.com"
             required
             autoComplete="email"
             icon={EmailIcon}
@@ -152,7 +145,7 @@ const LoginForm = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.password ? errors.password : ''}
-            placeholder="••••••••"
+            placeholder="Enter your password"
             required
             autoComplete="current-password"
             icon={LockIcon}
@@ -166,18 +159,19 @@ const LoginForm = () => {
             size="lg"
             fullWidth
             loading={loading}
+            className="mt-6"
           >
             Sign In
           </Button>
         </div>
 
-        {/* Divider */}
+        {/* Sign up link */}
         <div className="mt-6 text-center">
-          <p className="text-text-secondary text-sm">
-            Don&apos;t have an account?{' '}
+          <p className="text-sm text-slate-400">
+            Don't have an account?{' '}
             <Link
               to="/signup"
-              className="text-accent-blue hover:text-accent-purple transition-colors duration-200 font-medium"
+              className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium"
             >
               Sign up now
             </Link>

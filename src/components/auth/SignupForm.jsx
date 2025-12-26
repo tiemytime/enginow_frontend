@@ -105,31 +105,24 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md">
       {/* Form Header */}
-      <div className="text-center mb-8 animate-slide-up">
-        <h1 className="text-4xl md:text-5xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-300 to-orange-300 mb-3"
-            style={{ 
-              textShadow: '0 0 30px rgba(236, 72, 153, 0.4)',
-              letterSpacing: '-0.02em'
-            }}>
-          Get Started
-        </h1>
-        <p className="text-slate-300 text-lg font-light italic">
-          Create your account to start managing tasks
+      <div className="mb-8 text-center">
+        <h2 className="text-3xl font-bold text-white mb-2">
+          Create an account
+        </h2>
+        <p className="text-slate-400">
+          Start managing your tasks efficiently
         </p>
       </div>
 
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-zinc-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl animate-scale-in hover:border-pink-500/20 transition-all duration-300"
-        style={{
-          boxShadow: '0 0 60px rgba(236, 72, 153, 0.25), 0 25px 70px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)'
-        }}
+        className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-8 shadow-2xl"
         noValidate
       >
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Name Field */}
           <Input
             label="Full Name"
@@ -139,7 +132,7 @@ const SignupForm = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.name ? errors.name : ''}
-            placeholder="John Doe"
+            placeholder="Enter your name"
             required
             autoComplete="name"
             icon={UserIcon}
@@ -147,14 +140,14 @@ const SignupForm = () => {
 
           {/* Email Field */}
           <Input
-            label="Email Address"
+            label="Email"
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.email ? errors.email : ''}
-            placeholder="john@example.com"
+            placeholder="you@example.com"
             required
             autoComplete="email"
             icon={EmailIcon}
@@ -169,7 +162,7 @@ const SignupForm = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             error={touched.password ? errors.password : ''}
-            placeholder="••••••••"
+            placeholder="Create a password"
             required
             autoComplete="new-password"
             icon={LockIcon}
@@ -177,33 +170,44 @@ const SignupForm = () => {
           />
 
           {/* Password Requirements */}
-          <div className="bg-secondary-dark/50 rounded-lg p-3 text-xs text-text-muted">
-            <p className="font-medium mb-1">Password requirements:</p>
-            <ul className="list-disc list-inside space-y-0.5">
-              <li>At least 6 characters</li>
-              <li>Must contain at least one number</li>
+          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-3 text-xs text-slate-400">
+            <p className="font-medium mb-1.5 text-slate-300">Password requirements:</p>
+            <ul className="space-y-1">
+              <li className="flex items-center gap-2">
+                <svg className="w-3 h-3 text-slate-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <circle cx="10" cy="10" r="2"/>
+                </svg>
+                At least 6 characters long
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="w-3 h-3 text-slate-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <circle cx="10" cy="10" r="2"/>
+                </svg>
+                Contains at least one number
+              </li>
             </ul>
           </div>
 
           {/* Submit Button */}
           <Button
             type="submit"
-            variant="warning"
+            variant="primary"
             size="lg"
             fullWidth
             loading={loading}
+            className="mt-6"
           >
             Create Account
           </Button>
         </div>
 
-        {/* Divider */}
+        {/* Sign in link */}
         <div className="mt-6 text-center">
-          <p className="text-text-secondary text-sm">
+          <p className="text-sm text-slate-400">
             Already have an account?{' '}
             <Link
               to="/login"
-              className="text-warning hover:text-orange-400 transition-colors duration-200 font-medium"
+              className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium"
             >
               Sign in
             </Link>
