@@ -38,8 +38,8 @@ const Input = ({
   // Determine actual input type
   const inputType = type === 'password' && isPasswordVisible ? 'text' : type;
 
-  // Base input styles
-  const baseInputStyles = 'w-full px-4 py-2.5 bg-secondary-dark text-text-primary border rounded-lg transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
+  // Base input styles - Black text for better readability
+  const baseInputStyles = 'w-full px-4 py-2.5 bg-white text-gray-900 placeholder:text-gray-400 border rounded-lg transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed font-medium';
   
   // Border styles based on state
   const borderStyles = error
@@ -59,10 +59,10 @@ const Input = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-text-secondary mb-2"
+          className="block text-sm font-medium text-slate-200 mb-2"
         >
           {label}
-          {required && <span className="text-danger ml-1">*</span>}
+          {required && <span className="text-red-400 ml-1">*</span>}
         </label>
       )}
 
@@ -70,7 +70,7 @@ const Input = ({
       <div className="relative">
         {/* Icon */}
         {Icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
             <Icon className="w-5 h-5" />
           </div>
         )}
@@ -100,7 +100,7 @@ const Input = ({
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors duration-200 focus:outline-none"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200 focus:outline-none"
             aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
           >
             {isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />}
@@ -119,7 +119,7 @@ const Input = ({
       {error && (
         <p
           id={`${name}-error`}
-          className="mt-1.5 text-sm text-danger animate-slide-down"
+          className="mt-1.5 text-sm text-red-400 animate-slide-down"
         >
           {error}
         </p>

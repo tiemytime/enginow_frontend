@@ -103,13 +103,17 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md mx-auto">
       {/* Form Header */}
       <div className="text-center mb-8 animate-slide-up">
-        <h1 className="text-4xl font-display font-bold text-gradient-blue mb-2">
+        <h1 className="text-4xl md:text-5xl font-playfair font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 mb-3"
+            style={{ 
+              textShadow: '0 0 30px rgba(139, 92, 246, 0.4)',
+              letterSpacing: '-0.02em'
+            }}>
           Welcome Back
         </h1>
-        <p className="text-text-secondary">
+        <p className="text-slate-300 text-lg font-light italic">
           Sign in to manage your tasks
         </p>
       </div>
@@ -117,10 +121,13 @@ const LoginForm = () => {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="glass-effect-strong rounded-xl p-8 shadow-2xl animate-scale-in"
+        className="bg-zinc-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl animate-scale-in hover:border-purple-500/20 transition-all duration-300"
+        style={{
+          boxShadow: '0 0 60px rgba(139, 92, 246, 0.25), 0 25px 70px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)'
+        }}
         noValidate
       >
-        <div className="space-y-6 text-black">
+        <div className="space-y-6">
           {/* Email Field */}
           <Input
             label="Email Address"

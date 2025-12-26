@@ -93,7 +93,7 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
 
   const labelClasses = (fieldName) => `
     block text-sm font-medium mb-2
-    ${errors[fieldName] ? 'text-red-700' : 'text-gray-700'}
+    ${errors[fieldName] ? 'text-red-400' : 'text-white'}
   `;
 
   return (
@@ -118,7 +118,7 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
           maxLength={100}
         />
         {errors.title && (
-          <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+          <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
             <XMarkIcon className="w-4 h-4" />
             {errors.title}
           </p>
@@ -143,12 +143,12 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
         />
         <div className="mt-1 flex justify-between items-center">
           {errors.description ? (
-            <p className="text-sm text-red-600 flex items-center gap-1">
+            <p className="text-sm text-red-400 flex items-center gap-1">
               <XMarkIcon className="w-4 h-4" />
               {errors.description}
             </p>
           ) : (
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-slate-400">
               {formData.description.length}/500 characters
             </span>
           )}
@@ -188,7 +188,7 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
               disabled={isLoading}
               className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
             />
-            <label htmlFor="completed" className="ml-2 text-sm font-medium text-gray-700">
+            <label htmlFor="completed" className="ml-2 text-sm font-medium text-white">
               Mark as completed
             </label>
           </div>
@@ -210,7 +210,7 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
           className={inputClasses('dueDate')}
         />
         {errors.dueDate && (
-          <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+          <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
             <XMarkIcon className="w-4 h-4" />
             {errors.dueDate}
           </p>
