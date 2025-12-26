@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, Bars3Icon, FunnelIcon, RectangleStackIcon } from '@heroicons/react/24/outline';
 import { useTask } from '../hooks/useTask';
 import { useTaskFilters } from '../hooks/useTaskFilters';
 import { useConfetti } from '../hooks/useConfetti';
@@ -53,6 +53,9 @@ const DashboardPage = () => {
   // Phase 3.3 Modal states
   const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+
+  // Mobile menu state
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Loading states
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -205,7 +208,7 @@ const DashboardPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
         <div className="bg-slate-800 border border-red-500/50 rounded-xl shadow-xl p-8 max-w-md w-full text-center">
           <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -228,50 +231,38 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-900">
-      {/* Left Sidebar */}
-      <LeftSidebar />
+    <div className="flex min-h-screen bg-black">
+      {/* Left Sidebar - Hidden on mobile */}
+      <div className="hidden lg:block">
+        <LeftSidebar />
+      </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex-1 overflow-y-auto pb-20 xl:pb-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r 
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r 
                              from-indigo-400 via-purple-400 to-pink-400 mb-2">
                   Task Dashboard
                 </h1>
-                <p className="text-slate-400">
+                <p className="text-sm sm:text-base text-slate-400">
                   Manage your tasks efficiently and stay organized ✨
                 </p>
               </div>
               
               <div className="flex items-center gap-3">
-                {/* Filter Button */}
-                <button
-                  onClick={() => setIsFilterSidebarOpen(true)}
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-slate-800 border border-slate-700
-                           text-slate-300 rounded-lg font-medium hover:bg-slate-700 hover:border-indigo-500/50
-                           transition-all duration-200 shadow-lg hover:shadow-indigo-900/20"
-                >
-                  <FunnelIcon className="w-5 h-5" />
-                  Filters
-                  {(filters.search || filters.status !== 'all' || filters.priority !== 'all') && (
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse" />
-                  )}
-                </button>
-
                 {/* Create Task Button */}
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600
+                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-indigo-600 to-purple-600
                            text-white rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700
                            transition-all duration-200 shadow-lg shadow-indigo-900/50 hover:shadow-xl 
-                           hover:shadow-indigo-900/60 transform hover:-translate-y-0.5"
+                           hover:shadow-indigo-900/60 transform hover:-translate-y-0.5 text-sm sm:text-base"
                 >
-                  <PlusIcon className="w-5 h-5" />
+                  <PlusIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   Create Task
                 </button>
               </div>
@@ -377,14 +368,60 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Right Sidebar - Quick Actions, Progress & Calendar */}
-      <RightSidebar
-        tasks={tasks}
-        onCreateTask={() => setIsCreateModalOpen(true)}
-        onTemplates={() => setIsTemplatesModalOpen(true)}
-        onBulkSelect={bulkActions.toggleSelectionMode}
-        onExport={() => setIsExportModalOpen(true)}
-      />
+      {/* Right Sidebar - Hidden on mobile and tablet, visible on large screens */}
+      <div className="hidden xl:block">
+        <RightSidebar
+          tasks={tasks}
+          onTemplates={() => setIsTemplatesModalOpen(true)}
+          onFilterToggle={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
+        />
+      </div>
+
+      {/* Mobile Bottom Navigation - Visible only on mobile/tablet */}
+      <div className="fixed bottom-0 left-0 right-0 xl:hidden bg-zinc-950 border-t border-white/10 
+                    backdrop-blur-xl z-40 safe-area-pb">
+        <div className="grid grid-cols-4 gap-1 px-2 py-3">
+          {/* Create Task */}
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/5 
+                     text-gray-400 hover:text-indigo-400 transition-all active:scale-95"
+          >
+            <PlusIcon className="w-6 h-6" />
+            <span className="text-xs font-medium">Create</span>
+          </button>
+
+          {/* Templates */}
+          <button
+            onClick={() => setIsTemplatesModalOpen(true)}
+            className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/5 
+                     text-gray-400 hover:text-purple-400 transition-all active:scale-95"
+          >
+            <RectangleStackIcon className="w-6 h-6" />
+            <span className="text-xs font-medium">Templates</span>
+          </button>
+
+          {/* Filters */}
+          <button
+            onClick={() => setIsFilterSidebarOpen(!isFilterSidebarOpen)}
+            className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/5 
+                     text-gray-400 hover:text-cyan-400 transition-all active:scale-95"
+          >
+            <FunnelIcon className="w-6 h-6" />
+            <span className="text-xs font-medium">Filters</span>
+          </button>
+
+          {/* Menu */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/5 
+                     text-gray-400 hover:text-emerald-400 transition-all active:scale-95"
+          >
+            <Bars3Icon className="w-6 h-6" />
+            <span className="text-xs font-medium">Menu</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -9,40 +9,40 @@
    GLOBAL CSS VARIABLES
    ============================================ */
 :root {
-  /* Dark Mode Colors */
-  --bg-primary: #0F172A;
-  --bg-secondary: #1E293B;
-  --bg-tertiary: #334155;
+  /* Dark Mode Colors - Pure Black Theme */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #121212;
 
   /* Primary Colors */
-  --primary-dark: #0F172A;
-  --primary-darker: #060913;
-  --secondary-dark: #1E293B;
+  --primary-dark: #000000;
+  --primary-darker: #000000;
+  --secondary-dark: #0a0a0a;
 
-  /* Accent Colors */
-  --accent-blue: #6366F1;
-  --accent-purple: #8B5CF6;
-  --accent-cyan: #06b6d4;
+  /* Accent Colors - More Subtle */
+  --accent-blue: #4f46e5;
+  --accent-purple: #7c3aed;
+  --accent-cyan: #0891b2;
 
-  /* Status Colors */
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
+  /* Status Colors - Muted */
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #2563eb;
 
   /* Priority Colors */
-  --priority-high: #ef4444;
-  --priority-medium: #f59e0b;
-  --priority-low: #10b981;
+  --priority-high: #dc2626;
+  --priority-medium: #d97706;
+  --priority-low: #059669;
 
   /* Text Colors */
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
 
   /* Borders */
-  --border: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(255, 255, 255, 0.2);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);

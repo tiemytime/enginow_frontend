@@ -1,12 +1,14 @@
 import { createContext, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import * as taskApi from '../api/task.api';
+import { useAuth } from '../hooks/useAuth';
 
 // Create Task Context
 const TaskContext = createContext(null);
 
 // Task Provider Component
 export const TaskProvider = ({ children }) => {
+  const { user, isAuthenticated } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -173,11 +175,29 @@ export const TaskProvider = ({ children }) => {
   }, []);
 
   /**
-   * Refresh tasks on mount
+   * Clear all tasks (used on logout)
+   */
+  const clearTasks = useCallback(() => {
+    setTasks([]);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  /**
+   * Fetch tasks when user changes or logs in
+   * Clear tasks when user logs out
    */
   useEffect(() => {
-    fetchTasks();
-  }, [fetchTasks]);
+    if (isAuthenticated && user) {
+      // User is logged in, fetch their tasks
+      fetchTasks();
+    } else {
+      // User logged out, clear tasks
+      setTasks([]);
+      setError(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?._id, isAuthenticated]); // Refetch when user ID changes
 
   const value = {
     tasks,
@@ -192,6 +212,7 @@ export const TaskProvider = ({ children }) => {
     reorderTasks,
     updateFilters,
     clearFilters,
+    clearTasks,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

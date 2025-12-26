@@ -26,80 +26,73 @@ const TaskStats = ({ tasks }) => {
       label: 'Total Tasks',
       value: stats.total,
       icon: ClipboardDocumentListIcon,
-      bgColor: 'bg-gradient-to-br from-blue-500/20 to-blue-600/20',
-      iconBg: 'bg-white',
-      iconColor: 'text-blue-600',
-      textColor: 'text-blue-400',
-      borderColor: 'border-blue-500/30',
+      bgColor: 'bg-zinc-950/80',
+      iconBg: 'bg-blue-600/10',
+      iconColor: 'text-blue-500',
+      textColor: 'text-blue-500',
+      borderColor: 'border-white/10',
     },
     {
       label: 'Completed',
       value: stats.completed,
       icon: CheckCircleIcon,
-      bgColor: 'bg-gradient-to-br from-green-500/20 to-green-600/20',
-      iconBg: 'bg-white',
-      iconColor: 'text-green-600',
-      textColor: 'text-green-400',
-      borderColor: 'border-green-500/30',
+      bgColor: 'bg-zinc-950/80',
+      iconBg: 'bg-green-600/10',
+      iconColor: 'text-green-500',
+      textColor: 'text-green-500',
+      borderColor: 'border-white/10',
       subtitle: `${completionRate}% completion rate`,
     },
     {
       label: 'Pending',
       value: stats.pending,
       icon: ClockIcon,
-      bgColor: 'bg-gradient-to-br from-amber-500/20 to-amber-600/20',
-      iconBg: 'bg-white',
-      iconColor: 'text-amber-600',
-      textColor: 'text-amber-400',
-      borderColor: 'border-amber-500/30',
+      bgColor: 'bg-zinc-950/80',
+      iconBg: 'bg-amber-600/10',
+      iconColor: 'text-amber-500',
+      textColor: 'text-amber-500',
+      borderColor: 'border-white/10',
     },
     {
       label: 'Overdue',
       value: stats.overdue,
       icon: ExclamationTriangleIcon,
-      bgColor: 'bg-gradient-to-br from-red-500/20 to-red-600/20',
-      iconBg: 'bg-white',
-      iconColor: 'text-red-600',
-      textColor: 'text-red-400',
-      borderColor: 'border-red-500/30',
+      bgColor: 'bg-zinc-950/80',
+      iconBg: 'bg-red-600/10',
+      iconColor: 'text-red-500',
+      textColor: 'text-red-500',
+      borderColor: 'border-white/10',
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
       {statCards.map((stat) => {
         const Icon = stat.icon;
         return (
           <div
             key={stat.label}
-            className={`${stat.bgColor} backdrop-blur-sm rounded-3xl p-6 border ${stat.borderColor}
-                       hover:scale-105 hover:shadow-2xl hover:shadow-${stat.textColor}/20
+            className={`${stat.bgColor} backdrop-blur-sm rounded-2xl p-4 sm:p-6 border ${stat.borderColor}
+                       hover:border-white/20 hover:shadow-xl
                        transition-all duration-300 group relative overflow-hidden
                        aspect-square flex flex-col justify-between`}
           >
-            {/* Decorative dots in top right */}
-            <div className="absolute top-4 right-4 flex gap-1 opacity-30">
-              <div className="w-1 h-1 rounded-full bg-white"></div>
-              <div className="w-1 h-1 rounded-full bg-white"></div>
-              <div className="w-1 h-1 rounded-full bg-white"></div>
-            </div>
-
             {/* Icon at top */}
             <div className="flex justify-start">
-              <div className={`p-3 rounded-full ${stat.iconBg} shadow-lg
-                            group-hover:scale-110 transition-transform duration-300`}>
-                <Icon className={`w-6 h-6 ${stat.iconColor}`} />
+              <div className={`p-2 sm:p-3 rounded-xl ${stat.iconBg} 
+                            group-hover:scale-105 transition-transform duration-300`}>
+                <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.iconColor}`} />
               </div>
             </div>
 
             {/* Content at bottom */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium text-slate-300 tracking-wide">
+            <div className="space-y-1.5 sm:space-y-2">
+              <h3 className="text-xs sm:text-sm font-medium text-gray-400 tracking-wide">
                 {stat.label}
               </h3>
               
-              {/* Progress bar */}
-              <div className="w-full bg-slate-700/30 rounded-full h-1.5 overflow-hidden">
+              {/* Progress bar - subtle */}
+              <div className="w-full bg-white/5 rounded-full h-1 overflow-hidden">
                 <div 
                   className={`h-full ${stat.iconColor.replace('text-', 'bg-')} rounded-full transition-all duration-500`}
                   style={{ 
@@ -110,13 +103,13 @@ const TaskStats = ({ tasks }) => {
                 ></div>
               </div>
 
-              {/* Value and percentage */}
+              {/* Value */}
               <div className="flex items-end justify-between">
-                <div className={`text-xs font-semibold ${stat.textColor}`}>
-                  Progress
+                <div className="text-[10px] sm:text-xs font-medium text-gray-600">
+                  {stat.label === 'Completed' ? `${completionRate}%` : 'Tasks'}
                 </div>
-                <div className={`text-2xl font-bold ${stat.textColor}
-                              group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`text-2xl sm:text-3xl font-bold ${stat.textColor}
+                              group-hover:scale-105 transition-transform duration-300`}>
                   {stat.value}
                 </div>
               </div>

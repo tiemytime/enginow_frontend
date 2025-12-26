@@ -3,22 +3,18 @@ import PropTypes from 'prop-types';
 import { 
   ChevronLeftIcon, 
   ChevronRightIcon,
-  PlusIcon,
   RectangleStackIcon,
-  Squares2X2Icon,
-  ArrowDownTrayIcon,
+  FunnelIcon,
 } from '@heroicons/react/24/outline';
 
 /**
- * RightSidebar Component
+ * RightSidebar Component - Black Theme
  * Features: Quick Actions, Progress Bar, Calendar Widget
  */
 const RightSidebar = ({ 
   tasks = [],
-  onCreateTask,
   onTemplates,
-  onBulkSelect,
-  onExport,
+  onFilterToggle,
 }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -62,35 +58,21 @@ const RightSidebar = ({
     });
   };
 
-  // Quick action buttons
+  // Quick action buttons - Templates and Filters
   const quickActions = [
-    {
-      label: 'Create Task',
-      icon: PlusIcon,
-      onClick: onCreateTask,
-      color: 'from-indigo-500 to-indigo-600',
-      hoverColor: 'hover:from-indigo-600 hover:to-indigo-700',
-    },
     {
       label: 'Templates',
       icon: RectangleStackIcon,
       onClick: onTemplates,
-      color: 'from-purple-500 to-purple-600',
-      hoverColor: 'hover:from-purple-600 hover:to-purple-700',
+      color: 'bg-purple-600/90',
+      hoverColor: 'hover:bg-purple-600',
     },
     {
-      label: 'Bulk Select',
-      icon: Squares2X2Icon,
-      onClick: onBulkSelect,
-      color: 'from-blue-500 to-blue-600',
-      hoverColor: 'hover:from-blue-600 hover:to-blue-700',
-    },
-    {
-      label: 'Export All',
-      icon: ArrowDownTrayIcon,
-      onClick: onExport,
-      color: 'from-green-500 to-green-600',
-      hoverColor: 'hover:from-green-600 hover:to-green-700',
+      label: 'Filters',
+      icon: FunnelIcon,
+      onClick: onFilterToggle,
+      color: 'bg-indigo-600/90',
+      hoverColor: 'hover:bg-indigo-600',
     },
   ];
 
@@ -116,13 +98,13 @@ const RightSidebar = ({
         <div
           key={day}
           className={`aspect-square flex flex-col items-center justify-center
-                     rounded-lg transition-all duration-200 cursor-pointer
+                     rounded-lg transition-all duration-200 cursor-pointer text-sm
                      ${isToday 
-                       ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-900/50' 
-                       : 'hover:bg-slate-700/50'
+                       ? 'bg-indigo-600 text-white shadow-lg' 
+                       : 'hover:bg-white/5'
                      }`}
         >
-          <span className={`text-sm font-medium ${isToday ? 'text-white' : 'text-slate-300'}`}>
+          <span className={`font-medium ${isToday ? 'text-white' : 'text-gray-300'}`}>
             {day}
           </span>
           {dayTasks.length > 0 && (
@@ -143,28 +125,25 @@ const RightSidebar = ({
   };
 
   return (
-    <aside className="w-80 bg-slate-800/50 backdrop-blur-xl border-l border-slate-700/50 
+    <aside className="w-80 bg-black/95 backdrop-blur-xl border-l border-white/5 
                       flex flex-col h-screen sticky top-0">
       {/* Quick Actions Section */}
-      <div className="p-4 border-b border-slate-700/50">
-        <div className="space-y-3">
+      <div className="p-6 border-b border-white/5">
+        <h3 className="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">Quick Actions</h3>
+        <div className="grid grid-cols-2 gap-3">
           {quickActions.map((action) => {
             const Icon = action.icon;
             return (
               <button
                 key={action.label}
                 onClick={action.onClick}
-                className={`w-full flex items-center justify-between px-4 py-3 
-                           bg-gradient-to-r ${action.color} ${action.hoverColor}
-                           text-white rounded-lg font-medium shadow-lg
-                           transition-all duration-200 transform hover:scale-105
-                           hover:shadow-xl group`}
+                className={`${action.color} ${action.hoverColor}
+                         p-4 rounded-xl text-white text-left
+                         transition-all duration-200 shadow-lg
+                         hover:scale-105 active:scale-95 group`}
               >
-                <span className="text-sm font-semibold">{action.label}</span>
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center
-                              group-hover:bg-white/30 transition-all duration-200">
-                  <Icon className="w-5 h-5" />
-                </div>
+                <Icon className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-medium">{action.label}</span>
               </button>
             );
           })}
@@ -172,35 +151,30 @@ const RightSidebar = ({
       </div>
 
       {/* Progress Section */}
-      <div className="p-4 border-b border-slate-700/50">
-        <div className="bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-slate-700/50">
+      <div className="p-6 border-b border-white/5">
+        <div className="bg-zinc-950 rounded-xl p-4 backdrop-blur-sm border border-white/5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-slate-200">Overall Progress</h3>
-            <span className="text-2xl font-bold text-transparent bg-clip-text 
-                           bg-gradient-to-r from-indigo-400 to-purple-400">
+            <h3 className="text-sm font-semibold text-gray-300">Overall Progress</h3>
+            <span className="text-2xl font-bold text-indigo-500">
               {progress}%
             </span>
           </div>
           
           {/* Progress Bar */}
-          <div className="relative h-3 bg-slate-700/50 rounded-full overflow-hidden">
+          <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
             <div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-indigo-500 to-purple-600 
-                         rounded-full transition-all duration-500 shadow-lg shadow-indigo-900/50"
+              className="absolute inset-y-0 left-0 bg-indigo-600 
+                         rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
-            >
-              {/* Shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
-                            animate-shimmer"></div>
-            </div>
+            ></div>
           </div>
           
           {/* Stats */}
           <div className="flex justify-between mt-3 text-xs">
-            <span className="text-slate-400">
+            <span className="text-gray-500">
               {tasks.filter(t => t.completed).length} / {tasks.length} tasks
             </span>
-            <span className="text-green-400 font-medium">
+            <span className="text-green-500 font-medium">
               {tasks.filter(t => t.completed).length} completed
             </span>
           </div>
@@ -208,62 +182,64 @@ const RightSidebar = ({
       </div>
 
       {/* Calendar Section */}
-      <div className="p-4 flex-1 overflow-y-auto">
-        <div className="bg-slate-900/50 rounded-xl p-4 backdrop-blur-sm border border-slate-700/50">
+      <div className="p-6 flex-1 overflow-y-auto">
+        <div className="bg-zinc-950 rounded-xl p-4 backdrop-blur-sm border border-white/5">
           {/* Calendar Header */}
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={previousMonth}
-              className="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 
-                       hover:text-slate-200 transition-all"
+              className="p-2 rounded-lg hover:bg-white/5 text-gray-400 
+                       hover:text-gray-200 transition-all"
             >
               <ChevronLeftIcon className="w-5 h-5" />
             </button>
             
             <div className="text-center">
-              <h3 className="text-lg font-bold text-slate-200">{monthName}</h3>
-              <p className="text-xs text-slate-500">{year}</p>
+              <h3 className="text-sm font-bold text-gray-200">{monthName}</h3>
+              <p className="text-xs text-gray-500">{year}</p>
             </div>
             
             <button
               onClick={nextMonth}
-              className="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 
-                       hover:text-slate-200 transition-all"
+              className="p-2 rounded-lg hover:bg-white/5 text-gray-400 
+                       hover:text-gray-200 transition-all"
             >
               <ChevronRightIcon className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Weekday Headers */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-              <div key={day} className="text-center">
-                <span className="text-xs font-semibold text-slate-500">{day}</span>
-              </div>
-            ))}
-          </div>
-
           {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-2">
-            {renderCalendarDays()}
+          <div className="space-y-2">
+            {/* Weekday headers */}
+            <div className="grid grid-cols-7 gap-1 mb-2">
+              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+                <div key={index} className="text-center">
+                  <span className="text-xs text-gray-600 font-medium">{day}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar days */}
+            <div className="grid grid-cols-7 gap-1">
+              {renderCalendarDays()}
+            </div>
           </div>
         </div>
 
         {/* Legend */}
-        <div className="mt-4 bg-slate-900/50 rounded-xl p-3 backdrop-blur-sm border border-slate-700/50">
-          <h4 className="text-xs font-semibold text-slate-300 mb-2">Legend</h4>
-          <div className="space-y-1.5">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded bg-gradient-to-br from-indigo-600 to-purple-600"></div>
-              <span className="text-xs text-slate-400">Today</span>
+        <div className="mt-4 bg-zinc-950 rounded-xl p-3 backdrop-blur-sm border border-white/5">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-indigo-600"></div>
+              <span className="text-gray-500">Today</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
-              <span className="text-xs text-slate-400">Completed tasks</span>
+              <span className="text-gray-500">Done</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-              <span className="text-xs text-slate-400">Pending tasks</span>
+              <span className="text-gray-500">Pending</span>
             </div>
           </div>
         </div>
@@ -274,10 +250,8 @@ const RightSidebar = ({
 
 RightSidebar.propTypes = {
   tasks: PropTypes.array,
-  onCreateTask: PropTypes.func.isRequired,
   onTemplates: PropTypes.func.isRequired,
-  onBulkSelect: PropTypes.func.isRequired,
-  onExport: PropTypes.func.isRequired,
+  onFilterToggle: PropTypes.func.isRequired,
 };
 
 export default RightSidebar;
