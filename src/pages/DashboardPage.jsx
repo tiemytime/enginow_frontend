@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlusIcon, Bars3Icon, FunnelIcon, RectangleStackIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, FunnelIcon, RectangleStackIcon, ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 import { useTask } from '../hooks/useTask';
 import { useTaskFilters } from '../hooks/useTaskFilters';
 import { useConfetti } from '../hooks/useConfetti';
@@ -16,6 +16,7 @@ import TaskTemplatesModal from '../components/dashboard/TaskTemplatesModal';
 import ExportModal from '../components/dashboard/ExportModal';
 import LeftSidebar from '../components/dashboard/LeftSidebar';
 import RightSidebar from '../components/dashboard/RightSidebar';
+import DailyTodoPlanner from '../components/dashboard/DailyTodoPlanner';
 import { exportAsJSON, exportAsCSV, exportAsMarkdown, getExportStats } from '../utils/exportUtils';
 
 const DashboardPage = () => {
@@ -53,9 +54,7 @@ const DashboardPage = () => {
   // Phase 3.3 Modal states
   const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
-
-  // Mobile menu state
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDailyPlannerOpen, setIsDailyPlannerOpen] = useState(false);
 
   // Loading states
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -272,15 +271,27 @@ const DashboardPage = () => {
           {/* Stats */}
           <TaskStats tasks={tasks} />
 
-          {/* Task List */}
-          <TaskList
-            tasks={filteredTasks}
-            loading={loading}
-            onEdit={handleEditClick}
-            onDelete={handleDeleteClick}
-            onComplete={handleCompleteTask}
-            onReorder={handleReorderTasks}
-          />
+          {/* Main Content Grid: Daily Planner + Task List */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+            {/* Daily Todo Planner - Hidden on mobile, visible on desktop */}
+            <div className="hidden lg:block lg:col-span-4">
+              <div className="sticky top-4" style={{ height: 'calc(100vh - 400px)', minHeight: '500px' }}>
+                <DailyTodoPlanner />
+              </div>
+            </div>
+
+            {/* Task List - Full width on mobile, 8 columns on desktop */}
+            <div className="lg:col-span-8">
+              <TaskList
+                tasks={filteredTasks}
+                loading={loading}
+                onEdit={handleEditClick}
+                onDelete={handleDeleteClick}
+                onComplete={handleCompleteTask}
+                onReorder={handleReorderTasks}
+              />
+            </div>
+          </div>
 
           {/* Filter Sidebar */}
           <FilterSidebar
@@ -355,6 +366,17 @@ const DashboardPage = () => {
             stats={getExportStats(filteredTasks)}
           />
 
+          {/* Daily Todo Planner Modal - Mobile Only */}
+          <Modal
+            isOpen={isDailyPlannerOpen}
+            onClose={() => setIsDailyPlannerOpen(false)}
+            title="Daily Todo List"
+          >
+            <div style={{ height: '70vh', minHeight: '500px' }}>
+              <DailyTodoPlanner />
+            </div>
+          </Modal>
+
           {/* Phase 3.3: Bulk Actions Bar */}
           {bulkActions.hasSelection && (
             <BulkActionsBar
@@ -411,14 +433,14 @@ const DashboardPage = () => {
             <span className="text-xs font-medium">Filters</span>
           </button>
 
-          {/* Menu */}
+          {/* Daily Todo - Mobile Only */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => setIsDailyPlannerOpen(!isDailyPlannerOpen)}
             className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-white/5 
-                     text-gray-400 hover:text-emerald-400 transition-all active:scale-95"
+                     text-gray-400 hover:text-pink-400 transition-all active:scale-95"
           >
-            <Bars3Icon className="w-6 h-6" />
-            <span className="text-xs font-medium">Menu</span>
+            <ClipboardDocumentListIcon className="w-6 h-6" />
+            <span className="text-xs font-medium">Daily</span>
           </button>
         </div>
       </div>
