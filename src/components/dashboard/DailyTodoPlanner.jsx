@@ -92,7 +92,7 @@ const DailyTodoPlanner = () => {
                 <p className="text-xs font-medium capitalize" 
                    style={{ 
                      fontFamily: '"Playfair Display", Georgia, serif',
-                     color: '#4a4a4a',
+                     color: '#000000',
                      letterSpacing: '0.5px'
                    }}>
                   {getCurrentDay()}

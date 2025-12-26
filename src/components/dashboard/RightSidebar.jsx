@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { 
   ChevronLeftIcon, 
@@ -9,7 +9,7 @@ import {
 
 /**
  * RightSidebar Component - Black Theme
- * Features: Quick Actions, Progress Bar, Calendar Widget
+ * Features: Quick Actions, Time Clock, Calendar, Overall Progress
  */
 const RightSidebar = ({ 
   tasks = [],
@@ -17,6 +17,16 @@ const RightSidebar = ({
   onFilterToggle,
 }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+
+  // Update time every second for the flip clock
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   // Calculate progress
   const progress = useMemo(() => {
@@ -125,7 +135,7 @@ const RightSidebar = ({
   };
 
   return (
-    <aside className="w-80 bg-black/95 backdrop-blur-xl border-l border-white/5 
+    <aside className="w-96 bg-black/95 backdrop-blur-xl border-l border-white/5 
                       flex flex-col h-screen sticky top-0">
       {/* Quick Actions Section */}
       <div className="p-6 border-b border-white/5">
@@ -150,39 +160,51 @@ const RightSidebar = ({
         </div>
       </div>
 
-      {/* Progress Section */}
+      {/* Time Clock Section */}
       <div className="p-6 border-b border-white/5">
-        <div className="bg-zinc-950 rounded-xl p-4 backdrop-blur-sm border border-white/5">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-300">Overall Progress</h3>
-            <span className="text-2xl font-bold text-indigo-500">
-              {progress}%
-            </span>
+        <div className="bg-zinc-950 rounded-lg p-4 backdrop-blur-sm border border-white/5">
+          {/* Date */}
+          <div className="text-center mb-3">
+            <p className="text-xs text-gray-500 font-medium">
+              {time.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric' 
+              })}
+            </p>
           </div>
           
-          {/* Progress Bar */}
-          <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
-            <div
-              className="absolute inset-y-0 left-0 bg-indigo-600 
-                         rounded-full transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            ></div>
+          {/* Flip Clock Display */}
+          <div className="flex justify-center items-center space-x-3">
+            {/* Hours */}
+            <div className="flex space-x-1.5">
+              <FlipDigit value={time.getHours().toString().padStart(2, '0')[0]} />
+              <FlipDigit value={time.getHours().toString().padStart(2, '0')[1]} />
+            </div>
+            
+            {/* Separator */}
+            <div className="flex flex-col space-y-2 px-1">
+              <div className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse"></div>
+            </div>
+            
+            {/* Minutes */}
+            <div className="flex space-x-1.5">
+              <FlipDigit value={time.getMinutes().toString().padStart(2, '0')[0]} />
+              <FlipDigit value={time.getMinutes().toString().padStart(2, '0')[1]} />
+            </div>
           </div>
           
-          {/* Stats */}
-          <div className="flex justify-between mt-3 text-xs">
-            <span className="text-gray-500">
-              {tasks.filter(t => t.completed).length} / {tasks.length} tasks
-            </span>
-            <span className="text-green-500 font-medium">
-              {tasks.filter(t => t.completed).length} completed
-            </span>
+          {/* Time Labels */}
+          <div className="flex justify-center items-center space-x-12 mt-3">
+            <span className="text-xs text-gray-600 uppercase tracking-wide font-medium">HOUR</span>
+            <span className="text-xs text-gray-600 uppercase tracking-wide font-medium">MIN</span>
           </div>
         </div>
       </div>
 
       {/* Calendar Section */}
-      <div className="p-6 flex-1 overflow-y-auto">
+      <div className="p-6 border-b border-white/5 flex-1 overflow-y-auto">
         <div className="bg-zinc-950 rounded-xl p-4 backdrop-blur-sm border border-white/5">
           {/* Calendar Header */}
           <div className="flex items-center justify-between mb-4">
@@ -244,7 +266,61 @@ const RightSidebar = ({
           </div>
         </div>
       </div>
+
+      {/* Overall Progress Section */}
+      <div className="p-6 border-t border-white/5">
+        <div className="bg-zinc-950 rounded-xl p-4 backdrop-blur-sm border border-white/5">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-gray-300">Overall Progress</h3>
+            <span className="text-2xl font-bold text-indigo-500">
+              {progress}%
+            </span>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
+            <div
+              className="absolute inset-y-0 left-0 bg-indigo-600 
+                         rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+          
+          {/* Stats */}
+          <div className="flex justify-between mt-3 text-xs">
+            <span className="text-gray-500">
+              {tasks.filter(t => t.completed).length} / {tasks.length} tasks
+            </span>
+            <span className="text-green-500 font-medium">
+              {tasks.filter(t => t.completed).length} completed
+            </span>
+          </div>
+        </div>
+      </div>
     </aside>
+  );
+};
+
+/**
+ * FlipDigit Component
+ * Individual flip clock digit with gradient background
+ */
+const FlipDigit = ({ value }) => {
+  return (
+    <div className="relative">
+      <div className="w-16 h-20 bg-gradient-to-br from-zinc-900 to-black 
+                      rounded-lg border border-white/10 shadow-lg
+                      flex items-center justify-center">
+        <span className="text-5xl font-bold text-transparent bg-clip-text 
+                         bg-gradient-to-br from-indigo-400 to-indigo-500">
+          {value}
+        </span>
+      </div>
+      {/* Flip effect line */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-full h-px bg-white/10"></div>
+      </div>
+    </div>
   );
 };
 

@@ -37,25 +37,57 @@ const TaskCard = ({
   const overdue = isTaskOverdue(task.dueDate, task.completed);
   const dueSoon = isTaskDueSoon(task.dueDate, task.completed);
 
+  // Get blur background gradient based on priority
+  const getBlurBackground = () => {
+    if (task.completed) return 'from-slate-600/30 via-slate-700/25 to-slate-600/30';
+    
+    switch (getPriorityVariant(task.priority)) {
+      case 'high':
+        return 'from-red-600/40 via-orange-600/30 to-pink-600/40';
+      case 'medium':
+        return 'from-amber-600/40 via-yellow-600/30 to-orange-500/40';
+      case 'low':
+        return 'from-green-600/40 via-emerald-600/30 to-teal-600/40';
+      default:
+        return 'from-indigo-600/40 via-purple-600/30 to-blue-600/40';
+    }
+  };
+
   return (
     <div ref={setNodeRef} style={style}>
-      <div
-        className={`
-          group relative overflow-hidden bg-slate-800 border border-slate-700 rounded-xl p-6
-          transition-all duration-300
-          ${!task.completed ? 'hover:border-indigo-500/50 hover:shadow-xl hover:shadow-indigo-900/20 hover:-translate-y-0.5' : ''}
-          ${task.completed ? 'opacity-60 bg-slate-800/50' : ''}
-          ${isDragging ? 'shadow-2xl shadow-indigo-500/50 ring-2 ring-indigo-500 scale-105' : ''}
-        `}
-      >
-        {/* Accent Bar - Left side colored indicator */}
-        <div className={`
-          absolute left-0 top-0 bottom-0 w-1 transition-all duration-300
-          ${getPriorityVariant(task.priority) === 'high' ? 'bg-red-500' : ''}
-          ${getPriorityVariant(task.priority) === 'medium' ? 'bg-amber-500' : ''}
-          ${getPriorityVariant(task.priority) === 'low' ? 'bg-green-500' : ''}
-          ${task.completed ? 'bg-slate-600' : ''}
-        `} />
+      <div className="relative">
+        {/* Main Card with Glass Effect */}
+        <div
+          className={`
+            group relative overflow-hidden rounded-xl p-6
+            transition-all duration-300
+            ${!task.completed ? 'hover:shadow-xl hover:-translate-y-0.5' : ''}
+            ${task.completed ? 'opacity-60' : ''}
+            ${isDragging ? 'shadow-2xl ring-2 ring-indigo-500 scale-105' : ''}
+          `}
+          style={{
+            background: 'rgba(20, 20, 25, 0.6)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+        >
+          {/* Warm Blur Background Orbs - Similar to DailyPlanner */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className={`absolute -top-10 -right-10 w-32 h-32 ${getBlurBackground()} rounded-full blur-3xl opacity-60 transition-all duration-300`}></div>
+            <div className={`absolute -bottom-10 -left-10 w-32 h-32 ${getBlurBackground()} rounded-full blur-3xl opacity-40 transition-all duration-300`}></div>
+          </div>
+
+          {/* Content Container */}
+          <div className="relative z-10">
+            {/* Accent Bar - Left side colored indicator */}
+            <div className={`
+              absolute left-0 top-0 bottom-0 w-1 transition-all duration-300
+              ${getPriorityVariant(task.priority) === 'high' ? 'bg-red-500' : ''}
+              ${getPriorityVariant(task.priority) === 'medium' ? 'bg-amber-500' : ''}
+              ${getPriorityVariant(task.priority) === 'low' ? 'bg-green-500' : ''}
+              ${task.completed ? 'bg-slate-600' : ''}
+            `} />
 
         {/* Drag Handle */}
         {isDraggable && !task.completed && (
@@ -145,9 +177,11 @@ const TaskCard = ({
 
         {/* Completion Overlay */}
         {task.completed && (
-          <div className="absolute inset-0 bg-gradient-to-br from-green-900/10 to-transparent 
-                        pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-emerald-500/5 to-teal-500/10 
+                        pointer-events-none backdrop-blur-sm z-20" />
         )}
+          </div>
+        </div>
       </div>
     </div>
   );
