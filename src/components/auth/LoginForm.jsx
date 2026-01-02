@@ -89,7 +89,13 @@ const LoginForm = () => {
       showSuccess(result.message);
       navigate('/dashboard');
     } else {
-      showError(result.message);
+      // Check if error is due to invalid credentials
+      if (result.message === 'Invalid credentials' || 
+          result.message?.toLowerCase().includes('invalid')) {
+        showError('Invalid email or password. New user? Try signing up!');
+      } else {
+        showError(result.message);
+      }
       
       // Set field-specific errors if available
       if (result.errors) {
@@ -112,6 +118,17 @@ const LoginForm = () => {
         <p className="text-slate-400">
           Sign in to your account to continue
         </p>
+        
+        {/* New user hint */}
+        <div className="mt-4 text-sm text-slate-500">
+          New here?{' '}
+          <Link
+            to="/signup"
+            className="text-indigo-400 hover:text-indigo-300 transition-colors font-medium"
+          >
+            Create an account
+          </Link>
+        </div>
       </div>
 
       {/* Form */}
